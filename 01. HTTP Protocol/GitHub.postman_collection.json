@@ -1,0 +1,491 @@
+{
+	"info": {
+		"_postman_id": "15f44fe6-e361-4545-8d01-2a150bc53a01",
+		"name": "GitHub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27607247"
+	},
+	"item": [
+		{
+			"name": "GitHub Issues",
+			"item": [
+				{
+					"name": "Retrieve All Issues from Repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Title</th>\r",
+									"        <th>User</th>\r",
+									"        <th>State</th>\r",
+									"        <th>Comments</th>\r",
+									"        <th>Created At</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr id=row_{{@key}}>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{title}}</td>\r",
+									"            <td>{{user.login}}</td>\r",
+									"            <td>{{state}}</td>\r",
+									"            <td>{{comments}}</td>\r",
+									"            <td>{{created_at}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{github auth token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues?page=2",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Issue by Number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a New Issue",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Missing [Submit] button\",\r\n  \"body\": \"I'm having a problem with this.\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Existing Issue",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Edited bug (new title)\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/9504",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"9504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Existing Issue",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"state\": \"closed\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/9504",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"9504"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve All Labels for Issue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/6/labels",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"6",
+								"labels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Comment for Issue",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"body\": \"This is a comment\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/6/comments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"6",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve All Comments for Issue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/6/comments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"6",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Comment by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/comments/762538948",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"comments",
+								"762538948"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Existing Comment",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"body\": \"Edited Comment\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/comments/2778228857",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"comments",
+								"2778228857"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Existing Comment",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{github auth token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "StilyanAtanasov",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/testnakov/test-nakov-repo/issues/comments/2778257709",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"testnakov",
+								"test-nakov-repo",
+								"issues",
+								"comments",
+								"2778257709"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "github auth token",
+			"value": "YOUR TOKEN",
+			"type": "string"
+		}
+	]
+}
